@@ -1,0 +1,32 @@
+name: Portfolio Rotation Strategy
+on:
+  schedule:
+    - cron: '30 21 * * 5'   # Every Friday at 4:30 PM ET (21:30 UTC)
+  workflow_dispatch:          # allows manual trigger from GitHub UI
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install \
+            yfinance \
+            pandas \
+            numpy \
+            requests \
+            gspread \
+            google-auth \
+            lxml \
+            html5lib
+      - name: Run rotation
+        env:
+          ALPACA_API_KEY:      ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY:   ${{ secrets.ALPACA_SECRET_KEY }}
+          GSPREAD_SA_KEY_JSON: ${{ secrets.GSPREAD_SA_KEY_JSON }}
+        run: python portfolio_rotation.py
