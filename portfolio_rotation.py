@@ -376,6 +376,8 @@ def compute_momentum(
             "avg_volume": int(avg_vol),
         })
 
+    if not rows:
+        return pd.DataFrame(columns=["ticker","sector","price","return_20d","return_5d","avg_volume"])
     df = pd.DataFrame(rows).sort_values("return_20d", ascending=False).head(TOP_N_STOCKS)
     df = df.reset_index(drop=True)
     df.index = df.index + 1
@@ -515,6 +517,8 @@ def compute_relative_strength(
             "avg_volume"  : int(avg_vol),
         })
 
+    if not rows:
+        return pd.DataFrame(columns=["ticker","sector","price","return_20d","vs_spy","spy_ret_20d","return_5d","avg_volume"])
     df = pd.DataFrame(rows).sort_values("vs_spy", ascending=False).head(TOP_N_STOCKS)
     df = df.reset_index(drop=True)
     df.index = df.index + 1
