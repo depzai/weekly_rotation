@@ -448,6 +448,8 @@ def compute_mean_reversion(
         })
 
     # Sort by RSI ascending (most oversold first)
+    if not rows:
+        return pd.DataFrame(columns=["ticker","sector","price","rsi","return_20d","return_5d","avg_volume"])
     df = pd.DataFrame(rows).sort_values("rsi", ascending=True).head(TOP_N_STOCKS)
     df = df.reset_index(drop=True)
     df.index = df.index + 1
